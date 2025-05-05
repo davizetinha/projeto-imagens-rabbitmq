@@ -1,0 +1,34 @@
+version: '3'
+services:
+  rabbitmq:
+    image: rabbitmq:3-management
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    networks:
+      - rede
+
+  generator:
+    build: ./message-generator
+    depends_on:
+      - rabbitmq
+    networks:
+      - rede
+
+  consumer_face:
+    build: ./consumer-face
+    depends_on:
+      - rabbitmq
+    networks:
+      - rede
+
+  consumer_team:
+    build: ./consumer-team
+    depends_on:
+      - rabbitmq
+    networks:
+      - rede
+
+networks:
+  rede:
+    driver: bridge
